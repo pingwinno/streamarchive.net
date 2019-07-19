@@ -9,7 +9,7 @@
         <v-spacer />
         <v-flex style="width: 100%" shrink>
           <v-layout wrap align-center>
-            <v-flex xs3 d-flex>
+            <v-flex xs5 md3 d-flex>
               <v-select
                 :items="sortItems"
                 v-model="parameters.sortBy"
@@ -35,7 +35,7 @@
                 </v-btn>
               </div>
             </v-flex>
-            <v-flex xs6 d-flex>
+            <v-flex xs7 md6 d-flex>
               <!--suppress CheckEmptyScriptTag -->
               <v-text-field class="centered-input" text-center placeholder="search" v-model="searchPhrase" clearable />
             </v-flex>
