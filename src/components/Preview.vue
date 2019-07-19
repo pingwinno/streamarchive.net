@@ -1,14 +1,13 @@
 <template>
   <v-flex xs6 md4 lg3>
-    <router-link to="/45" tag="div">
+    <router-link to="/" tag="div" class="pointer">
       <v-img
         :aspect-ratio="16 / 9"
         :src="source"
         @mouseover="onHover()"
         @error="onMouseOut()"
         @mouseout="onMouseOut()"
-        style="cursor: pointer"
-        lazy-src="https://picsum.photos/id/11/100/60"
+        :lazy-src="require('@/assets/placeholder.jpg')"
       >
         <template v-slot:placeholder>
           <v-layout fill-height align-center justify-center ma-0>
@@ -17,20 +16,18 @@
         </template>
         <v-layout pa-2 column fill-height>
           <v-flex>
-            <span class="pa-1" style="background: rgba(0,0,0,.6); border-radius:4px">
-              <v-icon small>play_arrow</v-icon> {{ duration }}
-            </span>
+            <span class="pa-1 holder caption"> <v-icon small>play_arrow</v-icon> {{ durationString }} </span>
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex shrink>
-            <span class="pa-1 right" style="background: rgba(0,0,0,.6); border-radius:4px">{{ game }}</span>
+            <span class="pa-1 right holder caption">{{ game }}</span>
           </v-flex>
         </v-layout>
       </v-img>
       <v-layout row nowrap>
-        <v-flex row style="overflow: hidden; white-space: nowrap; text-overflow: ellipsis">{{ title }}</v-flex>
+        <v-flex row class="text-truncate">{{ title }}</v-flex>
         <v-spacer />
-        <v-flex class="text-xs-right">{{ date }}</v-flex>
+        <v-flex class="text-xs-right grey--text caption no-wrap">{{ dateString }}</v-flex>
       </v-layout>
     </router-link>
   </v-flex>
@@ -45,6 +42,22 @@ export default {
     title: String,
     date: Number,
     duration: Number
+  },
+  computed: {
+    durationString() {
+      let date = new Date(null);
+      date.setSeconds(this.duration);
+      return date.toISOString().substr(11, 8);
+    },
+    dateString() {
+      let a = new Date();
+      a.setTime(this.date);
+      let months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+      let year = a.getFullYear();
+      let month = months[a.getMonth()];
+      let date = a.getDate();
+      return date + " " + month + " " + year;
+    }
   },
   data() {
     return {
@@ -79,3 +92,11 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.holder {
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  user-select: none;
+}
+</style>
