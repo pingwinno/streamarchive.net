@@ -1,3 +1,3 @@
 <template>
-  <div>Заплатка</div>
+  <div>Видео</div>
 </template>

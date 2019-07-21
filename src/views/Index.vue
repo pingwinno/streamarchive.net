@@ -1,3 +1,3 @@
 <template>
-  <div>Заплатка</div>
+  <div>Стримеры</div>
 </template>

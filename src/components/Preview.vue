@@ -1,6 +1,6 @@
 <template>
   <v-flex xs6 md4 lg3>
-    <router-link to="/" tag="div" class="pointer">
+    <router-link :to="{ name: 'video', params: { uuid: id, streamer: streamer } }" tag="div" class="pointer">
       <v-img
         :aspect-ratio="16 / 9"
         :src="source"
@@ -41,7 +41,8 @@ export default {
     game: String,
     title: String,
     date: Number,
-    duration: Number
+    duration: Number,
+    streamer: String
   },
   computed: {
     durationString() {
@@ -61,11 +62,11 @@ export default {
   },
   data() {
     return {
-      defaultImage: `${process.env.VUE_APP_URL}/streams/olyashaa/${this.id}/preview.jpg`,
+      defaultImage: `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/preview.jpg`,
       previews: this.sequence.map(item => {
-        return `${process.env.VUE_APP_URL}/streams/olyashaa/${this.id}/animated_preview/${item.src}`;
+        return `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/animated_preview/${item.src}`;
       }),
-      source: `${process.env.VUE_APP_URL}/streams/olyashaa/${this.id}/preview.jpg`,
+      source: `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/preview.jpg`,
       loop: setTimeout(() => {}, 0),
       index: 1
     };

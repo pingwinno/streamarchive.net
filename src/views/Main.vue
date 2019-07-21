@@ -1,10 +1,12 @@
 <template>
   <div>
-    <v-parallax dark :src="require('@/assets/olyashaa.jpg')" style="background: #202020">
+    <v-parallax :src="headerImage" style="background: #202020">
       <v-layout align-center column justify-center>
         <v-layout fill-height align-center justify-center column>
-          <h1 class="display-2 font-weight-thin mb-1 text-uppercase">olyashaa</h1>
-          <router-link tag="h4" to="/" class="subheading text-uppercase pointer">StreamArchive</router-link>
+          <h1 class="display-3 font-weight-thin mb-1 text-uppercase">{{ $route.params.streamer }}</h1>
+          <router-link tag="h4" to="/" class="title font-weight-bold text-uppercase pointer link">
+            StreamArchive
+          </router-link>
         </v-layout>
         <v-spacer />
         <v-flex style="width: 100%" shrink>
@@ -25,11 +27,10 @@
                       : (parameters.sortingOrder = 'desc')
                   "
                   fab
-                  dark
                   small
                   flat
                 >
-                  <v-icon dark class="sort-button" :class="{ inverted: parameters.sortingOrder === 'asc' }">
+                  <v-icon class="sort-button" :class="{ inverted: parameters.sortingOrder === 'asc' }">
                     arrow_downward
                   </v-icon>
                 </v-btn>
@@ -54,14 +55,15 @@
           :title="stream.title"
           :date="stream.date"
           :duration="stream.duration"
+          :streamer="$route.params.streamer"
         ></preview>
       </v-layout>
-      <div class="ma-3" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="50">
+      <div class="ma-3" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <v-layout fill-height align-center justify-center v-if="busy && !endOfList">
           <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
         </v-layout>
         <v-layout justify-center v-if="this.endOfList">
-          Ну, в этой ситуации, мы просто, наше к это самое.... мы уже... здесь наши стримы всё. Окончены.
+          Ну, в этой ситуации... мы просто... наше к это самое.... мы уже... здесь наши стримы всё. Окончены.
         </v-layout>
       </div>
     </v-container>
@@ -91,6 +93,15 @@ export default {
         limit: 20
       }
     };
+  },
+  computed: {
+    headerImage() {
+      try {
+        return require("@/assets/" + this.$route.params.streamer + ".jpg");
+      } catch (e) {
+        return null;
+      }
+    }
   },
   created() {
     this.debouncedGetStreams = _.debounce(this.getStreams, 1000);
@@ -130,13 +141,15 @@ export default {
     },
     getList() {
       if (!this.endOfList)
-        this.$http.get(`${process.env.VUE_APP_URL}/db/streams/olyashaa`, { params: this.parameters }).then(response => {
-          if (response.body.length !== 0) {
-            this.streams = [...this.streams, ...response.body];
-            this.busy = false;
-            this.parameters.skip += 20;
-          } else this.endOfList = true;
-        });
+        this.$http
+          .get(`${process.env.VUE_APP_URL}/db/streams/${this.$route.params.streamer}`, { params: this.parameters })
+          .then(response => {
+            if (response.body.length !== 0) {
+              this.streams = [...this.streams, ...response.body];
+              this.busy = false;
+              this.parameters.skip += 20;
+            } else this.endOfList = true;
+          });
     }
   }
 };
