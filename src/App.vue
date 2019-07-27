@@ -1,6 +1,8 @@
 <template>
   <v-app dark>
-    <router-view :key="$route.fullPath" />
+    <transition name="fade" mode="out-in">
+      <router-view :key="$route.fullPath" />
+    </transition>
     <div class="donation">
       <v-btn round class="donation" @click="openDonation"><v-icon>attach_money</v-icon> Donation </v-btn>
     </div>
@@ -32,18 +34,27 @@ export default {
     background: linear-gradient(to bottom right, purple, black) !important;
   }
 }
-
+.fill-width {
+  width: 100%;
+}
 .sort-button {
   transition: all 500ms;
 }
 .inverted {
   transform: rotate(180deg);
 }
-
 .link {
   transition: color 0.5s;
   &:hover {
     color: grey;
   }
+}
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

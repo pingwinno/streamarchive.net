@@ -22,7 +22,7 @@ export default new Router({
     },
     {
       path: "/:streamer/video/:uuid",
-      name: "video",
+      name: "video-player.vue",
       component: Video,
       params: true
     }

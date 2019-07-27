@@ -1,6 +1,6 @@
 <template>
   <v-flex xs6 md4 lg3>
-    <router-link :to="{ name: 'video', params: { uuid: id, streamer: streamer } }" tag="div" class="pointer">
+    <router-link :to="{ name: 'video-player.vue', params: { uuid: id, streamer: streamer } }" tag="div" class="pointer">
       <v-img
         :aspect-ratio="16 / 9"
         :src="source"
