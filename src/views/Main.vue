@@ -50,7 +50,6 @@
           v-for="stream in streams"
           :key="stream._id"
           :id="stream._id"
-          :sequence="stream.animated_preview"
           :game="stream.game"
           :title="stream.title"
           :date="stream.date"
@@ -140,16 +139,15 @@ export default {
       }, 1000);
     },
     getList() {
+      let test = `${process.env.VUE_APP_URL}/streams/${this.$route.params.streamer}`;
       if (!this.endOfList)
-        this.$http
-          .get(`${process.env.VUE_APP_URL}/db/streams/${this.$route.params.streamer}`, { params: this.parameters })
-          .then(response => {
-            if (response.body.length !== 0) {
-              this.streams = [...this.streams, ...response.body];
-              this.busy = false;
-              this.parameters.skip += 20;
-            } else this.endOfList = true;
-          });
+        this.$http.get(test, { params: this.parameters }).then(response => {
+          if (response.body.length !== 0) {
+            this.streams = [...this.streams, ...response.body];
+            this.busy = false;
+            this.parameters.skip += 20;
+          } else this.endOfList = true;
+        });
     }
   }
 };

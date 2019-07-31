@@ -1,20 +1,20 @@
 <template>
   <div class="d-inline-flex">
-    <v-hover class="pointer" v-for="streamer in streamers" :key="streamer.name" style="height: 100vh">
+    <v-hover class="pointer" v-for="streamer in $streamers" :key="streamer" style="height: 100vh">
       <v-card
         slot-scope="{ hover }"
-        :width="window.width / streamers.length"
+        :width="window.width / $streamers.length"
         style="height: 100vh; border-radius: 0"
         class="elevation-0"
       >
-        <router-link :to="`/${streamer.name}`" tag="div" style="height: 100vh">
-          <v-img :src="require(`@/assets/index/${streamer.name}.jpg`)" style="height: 100vh">
+        <router-link :to="`/${streamer}`" tag="div" style="height: 100vh">
+          <v-img :src="require(`@/assets/index/${streamer}.jpg`)" style="height: 100vh">
             <transition name="half-fade">
               <div v-if="!hover" class="grey overlap fill-height"></div>
             </transition>
             <transition name="fade">
               <div v-if="hover" class="fill-height text-xs-center fill-width pt-5">
-                <span class="display-2 text-uppercase">{{ streamer.name }}</span>
+                <span class="display-2 text-uppercase">{{ streamer }}</span>
               </div>
             </transition>
           </v-img>
@@ -28,7 +28,6 @@
 export default {
   data() {
     return {
-      streamers: [{ name: "leyagornaya" }, { name: "albisha" }, { name: "olyashaa" }],
       window: {
         width: 0,
         height: 0

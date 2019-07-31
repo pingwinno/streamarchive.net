@@ -15,13 +15,20 @@
       </v-layout>
     </v-parallax>
     <v-container fluid grid-list-md>
-      <v-flex xs12 md9 class="mb-4">
-        <v-img :aspect-ratio="16 / 9">
-          <v-layout column fill-height>
-            <video-player :options="videoOptions" />
-          </v-layout>
-        </v-img>
-      </v-flex>
+      <v-layout wrap>
+        <v-flex xs12 md9 class="mb-4">
+          <v-img :aspect-ratio="16 / 9">
+            <v-layout column fill-height>
+              <video-player />
+            </v-layout>
+          </v-img>
+        </v-flex>
+        <v-flex xs12 md3 class="mb-4">
+          <!--{{ temp.title }} <br />
+          {{ temp.game }} <br />
+          {{ temp.date }}-->
+        </v-flex>
+      </v-layout>
     </v-container>
   </div>
 </template>
@@ -29,27 +36,6 @@
 import VideoPlayer from "@/components/VideoPlayer";
 export default {
   components: { VideoPlayer },
-  data() {
-    return {
-      videoOptions: {
-        autoplay: true,
-        controls: true,
-        controlBar: {
-          pictureInPictureToggle: false
-        },
-        sources: [
-          {
-            src: `https://storage.streamarchive.net/streams/${this.$route.params.streamer}/${
-              this.$route.params.uuid
-            }/index.mpd`,
-            type: "application/dash+xml"
-          }
-        ],
-        playbackRates: [0.5, 0.75, 1.0, 1.25, 1.5, 2.0],
-        plugins: { httpSourceSelector: { default: "auto" } }
-      }
-    };
-  },
   computed: {
     headerImage() {
       try {

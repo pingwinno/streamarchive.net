@@ -37,10 +37,9 @@
 export default {
   props: {
     id: String,
-    sequence: Array,
     game: String,
     title: String,
-    date: Number,
+    date: String,
     duration: Number,
     streamer: String
   },
@@ -51,22 +50,25 @@ export default {
       return date.toISOString().substr(11, 8);
     },
     dateString() {
-      let a = new Date();
+      /*let a = new Date();
       a.setTime(this.date);
       let months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
       let year = a.getFullYear();
       let month = months[a.getMonth()];
       let date = a.getDate();
-      return date + " " + month + " " + year;
+      return date + " " + month + " " + year;*/
+      return this.date;
     }
   },
   data() {
     return {
-      defaultImage: `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/preview.jpg`,
-      previews: this.sequence.map(item => {
-        return `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/animated_preview/${item.src}`;
+      defaultImage: `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${this.id}/preview.jpg`,
+      previews: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => {
+        return `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${
+          this.id
+        }/animated_preview/preview${item}.jpg`;
       }),
-      source: `${process.env.VUE_APP_URL}/streams/${this.streamer}/${this.id}/preview.jpg`,
+      source: `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${this.id}/preview.jpg`,
       loop: setTimeout(() => {}, 0),
       index: 1
     };
