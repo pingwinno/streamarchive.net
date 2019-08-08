@@ -7,7 +7,7 @@
         @mouseover="onHover()"
         @error="onMouseOut()"
         @mouseout="onMouseOut()"
-        :lazy-src="require('@/assets/placeholder.jpg')"
+        :lazy-src="lazySrc"
       >
         <template v-slot:placeholder>
           <v-layout fill-height align-center justify-center ma-0>
@@ -40,43 +40,57 @@ export default {
     game: String,
     title: String,
     date: String,
-    duration: Number,
-    streamer: String
+    duration: Number
   },
   computed: {
+    lazySrc() {
+      try {
+        return require("@/assets/image/misc/" + "placeholder.jpg");
+      } catch (e) {
+        return null;
+      }
+    },
+    baseUrl() {
+      return `${this.$endpoints[this.streamer]}`;
+    },
+
+    defaultImage() {
+      return `${this.baseUrl}/streams/${this.streamer}/${this.id}/preview.jpg`;
+    },
+    previews() {
+      return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => {
+        return `${this.baseUrl}/streams/${this.streamer}/${this.id}/animated_preview/preview${item}.jpg`;
+      });
+    },
     durationString() {
       let date = new Date(null);
-      date.setSeconds(this.duration);
+      date.setSeconds(this["duration"]);
       return date.toISOString().substr(11, 8);
     },
     dateString() {
-      /*let a = new Date();
-      a.setTime(this.date);
       let months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
-      let year = a.getFullYear();
-      let month = months[a.getMonth()];
-      let date = a.getDate();
-      return date + " " + month + " " + year;*/
-      return this.date;
+      let [day, index, year] = this.date
+        .split("T")[0]
+        .split("-")
+        .reverse();
+      return day + " " + months[index - 1] + " " + year;
     }
   },
   data() {
     return {
-      defaultImage: `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${this.id}/preview.jpg`,
-      previews: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => {
-        return `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${
-          this.id
-        }/animated_preview/preview${item}.jpg`;
-      }),
-      source: `${this.$endpoints[this.$route.params.streamer]}/streams/${this.streamer}/${this.id}/preview.jpg`,
+      streamer: this.$route.params.streamer,
       loop: setTimeout(() => {}, 0),
+      source: "",
       index: 1
     };
+  },
+  mounted() {
+    this.source = `${this.baseUrl}/streams/${this.streamer}/${this.id}/preview.jpg`;
   },
   methods: {
     onHover() {
       this.index = 1;
-      this.source = this.previews[0];
+      this.source = this["previews"][0];
       this.circle();
     },
     onMouseOut() {

@@ -1,21 +1,14 @@
 <template>
-  <video style="width: 100%; height: 100%" ref="videoPlayer" class="video-js"></video>
+  <video ref="videoPlayer" class="video-js"></video>
 </template>
 
 <script>
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
-import("videojs-contrib-dash");
-import("dashjs");
-
-require("videojs-contrib-quality-levels");
-require("videojs-http-source-selector");
-
-require("videojs-hotkeys");
-
 window.videojs = videojs;
-require("../assets/thumbnails/videojs.thumbnails.css");
-require("../assets/thumbnails/videojs.thumbnails");
+require("videojs-hotkeys");
+require("../assets/js/thumbnails/videojs.thumbnails.css");
+require("../assets/js/thumbnails/videojs.thumbnails");
 export default {
   name: "VideoPlayer",
   data() {
@@ -26,19 +19,20 @@ export default {
         controls: true,
         controlBar: { pictureInPictureToggle: false },
         playbackRates: [0.5, 0.75, 1.0, 1.25, 1.5, 2.0],
-        sources: [
-          {
-            src: `https://storage.streamarchive.net/streams/${this.$route.params.streamer}/${
-              this.$route.params.uuid
-            }/index-dvr.m3u8`,
-            type: "application/x-mpegURL"
-          }
-        ]
+        sources: [{ type: "application/x-mpegURL" }]
       }
     };
   },
+  computed: {
+    baseUrl() {
+      return `${this.$endpoints[this.$route.params.streamer]}`;
+    }
+  },
   mounted() {
     let vm = this;
+    this.options.sources[0].src = `${this.baseUrl}/streams/${this.$route.params.streamer}/${
+      this.$route.params.uuid
+    }/index-dvr.m3u8`;
     this.player = videojs(this.$refs.videoPlayer, this.options, function onPlayerReady() {
       this.hotkeys({
         volumeStep: 0.1,
@@ -47,25 +41,30 @@ export default {
         enableModifiersForNumbers: false
       });
 
-      let url = `https://storage.streamarchive.net/db/streams/${vm.$route.params.streamer}/${vm.$route.params.uuid}`;
-      let url2 = `https://storage.streamarchive.net/streams/${vm.$route.params.streamer}/${
-        vm.$route.params.uuid
-      }/timeline_preview/`;
-      vm.$http.get(url).then(response => {
-        this["thumbnails"](response.body[0]["timeline_preview"], url2);
+      let url = `/streams/${vm.$route.params.streamer}/${vm.$route.params.uuid}`;
+      vm.$http.get(process.env.VUE_APP_URL + url).then(response => {
+        vm.$emit("info", response.body);
+        let thumbnails = {};
+        for (let i = 0; i <= response.body.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` };
+        this["thumbnails"](thumbnails, vm.baseUrl + url + "/timeline_preview/");
       });
-
-      this.httpSourceSelector();
     });
   },
   beforeDestroy() {
-    if (this.player) {
-      this.player.dispose();
-    }
+    if (this.player) this.player.dispose();
   }
 };
 </script>
 
 <style>
-@import "../assets/vsg-skin.css";
+@import "../assets/css/vsg-skin.css";
+.video-js {
+  width: 100%;
+  height: 100%;
+}
+
+.video-js * {
+  user-select: none;
+  outline-style: none;
+}
 </style>

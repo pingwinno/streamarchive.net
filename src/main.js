@@ -12,7 +12,7 @@ Vue.use(InfiniteScroll);
 let endpoints = {};
 new Vue().$http.get(`${process.env.VUE_APP_URL}/streamers`).then(response => {
   endpoints = response.body.reduce(function(result, item) {
-    result[item.streamerName] = item.storageEndpoint;
+    result[item["streamerName"]] = item["storageEndpoint"];
     return result;
   }, {});
   Vue.prototype.$endpoints = endpoints;

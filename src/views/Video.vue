@@ -19,14 +19,34 @@
         <v-flex xs12 md9 class="mb-4">
           <v-img :aspect-ratio="16 / 9">
             <v-layout column fill-height>
-              <video-player />
+              <video-player @info="updateInfo" />
+              <!--<v-flex>
+                <v-range-slider
+                  v-model="range"
+                  :disabled="!stream.duration"
+                  :max="stream.duration"
+                  :min="0"
+                  :step="1"
+                ></v-range-slider>
+              </v-flex>
+              <v-flex>
+                <v-layout row>
+                  <v-subheader>{{ range[0] }}</v-subheader>
+                  <v-spacer />
+                  <v-btn></v-btn>
+                  <v-spacer />
+                  <v-subheader>{{ range[1] }}</v-subheader>
+                </v-layout>
+              </v-flex>-->
             </v-layout>
           </v-img>
         </v-flex>
         <v-flex xs12 md3 class="mb-4">
-          <!--{{ temp.title }} <br />
-          {{ temp.game }} <br />
-          {{ temp.date }}-->
+          <v-layout wrap>
+            <v-flex xs8 md12 class="title">{{ stream.title }}</v-flex>
+            <v-flex xs4 md12 class="subtitle-2 font-italic text-xs-right text-md-left">{{ stream.game }}</v-flex>
+            <v-flex xs12 md12 class="subtitle-1">{{ dateString }}</v-flex>
+          </v-layout>
         </v-flex>
       </v-layout>
     </v-container>
@@ -36,13 +56,33 @@
 import VideoPlayer from "@/components/VideoPlayer";
 export default {
   components: { VideoPlayer },
+  data() {
+    return {
+      stream: {},
+      range: [0, 120]
+    };
+  },
   computed: {
+    dateString() {
+      let months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+      if (!this.stream.date) return;
+      let [day, index, year] = this.stream.date
+        .split("T")[0]
+        .split("-")
+        .reverse();
+      return day + " " + months[index - 1] + " " + year;
+    },
     headerImage() {
       try {
         return require("@/assets/" + this.$route.params.streamer + ".jpg");
       } catch (e) {
         return null;
       }
+    }
+  },
+  methods: {
+    updateInfo(info) {
+      this.stream = info;
     }
   }
 };

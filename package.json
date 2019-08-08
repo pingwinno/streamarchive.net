@@ -1,6 +1,6 @@
 {
   "name": "streamarchive",
-  "version": "0.1.0",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -12,11 +12,8 @@
     "core-js": "^2.6.5",
     "lodash": "^4.17.15",
     "video.js": "^7.6.0",
-    "videojs-contrib-dash": "^2.11.0",
     "videojs-contrib-hls": "^5.15.0",
-    "videojs-contrib-quality-levels": "^2.0.9",
     "videojs-hotkeys": "^0.2.25",
-    "videojs-http-source-selector": "^1.1.5",
     "vue": "^2.6.10",
     "vue-infinite-scroll": "^2.0.2",
     "vue-resource": "^1.5.1",

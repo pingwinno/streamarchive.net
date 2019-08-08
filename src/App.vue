@@ -44,6 +44,8 @@ export default {
   transform: rotate(180deg);
 }
 .link {
+  color: white;
+  text-decoration: none;
   transition: color 0.5s;
   &:hover {
     color: grey;

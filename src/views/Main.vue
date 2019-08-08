@@ -14,23 +14,21 @@
             <v-flex xs5 md3 d-flex>
               <v-select
                 :items="sortItems"
-                v-model="parameters.sortBy"
+                v-model="parameters.order_by"
                 label="Сортировать по"
+                :disabled="!!searchPhrase"
                 item-text="title"
                 item-value="param"
               ></v-select>
               <div>
                 <v-btn
-                  @click="
-                    parameters.sortingOrder === 'desc'
-                      ? (parameters.sortingOrder = 'asc')
-                      : (parameters.sortingOrder = 'desc')
-                  "
+                  :disabled="!!searchPhrase"
+                  @click="parameters.order === 'desc' ? (parameters.order = 'asc') : (parameters.order = 'desc')"
                   fab
                   small
                   flat
                 >
-                  <v-icon class="sort-button" :class="{ inverted: parameters.sortingOrder === 'asc' }">
+                  <v-icon class="sort-button" :class="{ inverted: parameters.order === 'asc' }">
                     arrow_downward
                   </v-icon>
                 </v-btn>
@@ -54,16 +52,15 @@
           :title="stream.title"
           :date="stream.date"
           :duration="stream.duration"
-          :streamer="$route.params.streamer"
         ></preview>
       </v-layout>
       <div class="ma-3" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <v-layout fill-height align-center justify-center v-if="busy && !endOfList">
           <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
         </v-layout>
-        <v-layout justify-center v-if="this.endOfList">
+        <v-lapyout justify-center v-if="this.endOfList">
           Ну, в этой ситуации... мы просто... наше к это самое.... мы уже... здесь наши стримы всё. Окончены.
-        </v-layout>
+        </v-lapyout>
       </div>
     </v-container>
   </div>
@@ -86,14 +83,17 @@ export default {
       searchPhrase: "",
       streams: [],
       parameters: {
-        sortingOrder: "desc",
-        sortBy: "date",
-        skip: 0,
-        limit: 20
+        streamer: this.$route.params.streamer,
+        order: "desc",
+        order_by: "date",
+        page: 0
       }
     };
   },
   computed: {
+    baseUrl() {
+      return `${this.$endpoints[this.$route.params.streamer]}`;
+    },
     headerImage() {
       try {
         return require("@/assets/" + this.$route.params.streamer + ".jpg");
@@ -109,27 +109,18 @@ export default {
     searchPhrase() {
       this.debouncedGetStreams();
     },
-    "parameters.sortingOrder": function() {
+    "parameters.order": function() {
       this.debouncedGetStreams();
     },
-    "parameters.sortBy": function() {
+    "parameters.order_by": function() {
       this.debouncedGetStreams();
     }
   },
   methods: {
     getStreams() {
       this.endOfList = false;
-      this.parameters.skip = 0;
+      this.parameters.page = 0;
       this.streams = [];
-      if (!this.searchPhrase) {
-        this.$delete(this.parameters, "equalOperator");
-        this.$delete(this.parameters, "equalsField");
-        this.$delete(this.parameters, "equalsValue");
-      } else {
-        this.parameters.equalOperator = "text";
-        this.parameters.equalsField = "ru";
-        this.parameters.equalsValue = this.searchPhrase;
-      }
       this.getList();
     },
     loadMore() {
@@ -139,13 +130,21 @@ export default {
       }, 1000);
     },
     getList() {
-      let test = `${process.env.VUE_APP_URL}/streams/${this.$route.params.streamer}`;
+      let url = `${process.env.VUE_APP_URL}/streams}`;
+      let params = { params: this.parameters };
+      if (this.searchPhrase) {
+        url = `${process.env.VUE_APP_URL}/search`;
+        params = { params: { query: this.searchPhrase, streamer: this.$route.params.streamer } };
+      }
       if (!this.endOfList)
-        this.$http.get(test, { params: this.parameters }).then(response => {
-          if (response.body.length !== 0) {
+        this.$http.get(url, params).then(response => {
+          if (this.searchPhrase) {
+            this.streams = response.body;
+            this.endOfList = true;
+          } else if (response.body.length !== 0) {
             this.streams = [...this.streams, ...response.body];
             this.busy = false;
-            this.parameters.skip += 20;
+            this.parameters.page += 1;
           } else this.endOfList = true;
         });
     }

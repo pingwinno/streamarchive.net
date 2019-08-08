@@ -3,16 +3,22 @@ import Router from "vue-router";
 import Index from "./views/Index.vue";
 import Main from "./views/Main.vue";
 import Video from "./views/Video.vue";
+import NotFound from "./views/NotFound.vue";
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   mode: "history",
   routes: [
     {
       path: "/",
       name: "index",
       component: Index
+    },
+    {
+      path: "/404",
+      name: "NotFound",
+      component: NotFound
     },
     {
       path: "/:streamer",
@@ -28,3 +34,11 @@ export default new Router({
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.path === "/" || to.path === "/404") next();
+  else if (to.params.streamer && Vue.prototype.$streamers.indexOf(to.params.streamer) !== -1) next();
+  else next({ name: "NotFound" });
+});
+
+export default router;
