@@ -58,9 +58,9 @@
         <v-layout fill-height align-center justify-center v-if="busy && !endOfList">
           <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
         </v-layout>
-        <v-lapyout justify-center v-if="this.endOfList">
+        <v-layout justify-center v-if="this.endOfList">
           Ну, в этой ситуации... мы просто... наше к это самое.... мы уже... здесь наши стримы всё. Окончены.
-        </v-lapyout>
+        </v-layout>
       </div>
     </v-container>
   </div>
@@ -130,7 +130,7 @@ export default {
       }, 1000);
     },
     getList() {
-      let url = `${process.env.VUE_APP_URL}/streams}`;
+      let url = `${process.env.VUE_APP_URL}/streams`;
       let params = { params: this.parameters };
       if (this.searchPhrase) {
         url = `${process.env.VUE_APP_URL}/search`;

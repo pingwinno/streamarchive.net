@@ -41,12 +41,15 @@ export default {
         enableModifiersForNumbers: false
       });
 
-      let url = `/streams/${vm.$route.params.streamer}/${vm.$route.params.uuid}`;
+      let url = `/streams/${vm.$route.params.uuid}`;
+      let timelinePreviewUrl = `${vm.baseUrl}/streams/${vm.$route.params.streamer}/${
+        vm.$route.params.uuid
+      }/timeline_preview/`;
       vm.$http.get(process.env.VUE_APP_URL + url).then(response => {
         vm.$emit("info", response.body);
         let thumbnails = {};
         for (let i = 0; i <= response.body.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` };
-        this["thumbnails"](thumbnails, vm.baseUrl + url + "/timeline_preview/");
+        this["thumbnails"](thumbnails, timelinePreviewUrl);
       });
     });
   },

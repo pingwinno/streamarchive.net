@@ -20,24 +20,6 @@
           <v-img :aspect-ratio="16 / 9">
             <v-layout column fill-height>
               <video-player @info="updateInfo" />
-              <!--<v-flex>
-                <v-range-slider
-                  v-model="range"
-                  :disabled="!stream.duration"
-                  :max="stream.duration"
-                  :min="0"
-                  :step="1"
-                ></v-range-slider>
-              </v-flex>
-              <v-flex>
-                <v-layout row>
-                  <v-subheader>{{ range[0] }}</v-subheader>
-                  <v-spacer />
-                  <v-btn></v-btn>
-                  <v-spacer />
-                  <v-subheader>{{ range[1] }}</v-subheader>
-                </v-layout>
-              </v-flex>-->
             </v-layout>
           </v-img>
         </v-flex>
