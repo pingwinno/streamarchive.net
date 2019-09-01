@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="d-inline-flex">
+    <div class="d-inline-flex" style="position: relative">
+      <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')"><v-icon>arrow_downward</v-icon></v-btn>
       <v-hover class="pointer" v-for="streamer in $streamers" :key="streamer" style="height: 100vh">
         <v-card
           slot-scope="{ hover }"
@@ -38,7 +39,8 @@
         </v-card>
       </v-hover>
     </div>
-    <v-container fluid>
+    <v-container fluid id="info">
+      <div class="headline text-xs-center font-weight-bold text-uppercase" style="width: 100%">StreamArchive</div>
       <span class="display-1 d-block">О проекте</span>
       <span class="body-1 d-block pb-3">
         Всем драсьте. Мы - маленькая команда OpenStreamArchive. Месяцы работы, тонны перекопанного кода (спасибо твичу)
@@ -46,7 +48,7 @@
         пожеланиями от Утиной Армии. Теперь за новыми стримами следит специальный сервер и автоматически записывает их
         на лету, тем самым сохраняя всё. Конечно мы не можем гарантировать 100% надёжности как из-за того что проект
         создан любителями (но мы над этим работаем и стараемся сохранить всё), так и из-за того что сервер собран из
-        говна и палок, лежавших без дела (на данный момент около 3 терабайт стримов).
+        говна и палок, лежавших без дела.
       </span>
 
       <span class="display-1 d-block">Вставка для экспертов IT</span>
@@ -54,8 +56,8 @@
         Заливать на youtube бесполезно. Мы проверяли. 43 страйка из них 3 блокировки на 5 часовой стрим. И разгребать
         весь контент, что-то подменять и вырезать вручную при таких объемах вряд ли реализуемо в адекватные сроки.
         Google Photos - приличная часть видео не доступна в одном из старых архивов. VK - доступен не всем. Выделенный
-        сервер, подходящий под нужды архива ~100$/месяц. Если есть желающие захостить у себя сайт или с конкретными
-        предложениями - мы с радостью вас выслушаем.
+        сервер, подходящий под нужды архива ~100$/месяц. Если у вас есть конкретные предложения - мы с радостью вас
+        выслушаем.
       </span>
 
       <span class="display-1 d-block">Зачем это всё нужно?</span>
@@ -105,6 +107,7 @@ export default {
     };
   },
   created() {
+    document.title = "StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },
@@ -125,6 +128,13 @@ export default {
   position: absolute;
   opacity: 0.5;
   width: 100%;
+}
+
+.toInfo {
+  background: rgba(0, 0, 0, 0.3);
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
 }
 
 .half-fade-enter-active,

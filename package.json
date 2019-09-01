@@ -14,6 +14,7 @@
     "video.js": "^7.6.0",
     "videojs-contrib-hls": "^5.15.0",
     "videojs-hotkeys": "^0.2.25",
+    "videojs-offset": "^2.1.2",
     "vue": "^2.6.10",
     "vue-infinite-scroll": "^2.0.2",
     "vue-resource": "^1.5.1",

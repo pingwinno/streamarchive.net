@@ -54,7 +54,7 @@
           :duration="stream.duration"
         ></preview>
       </v-layout>
-      <div class="ma-3" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
+      <div class="loader" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="100">
         <v-layout fill-height align-center justify-center v-if="busy && !endOfList">
           <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
         </v-layout>
@@ -103,6 +103,7 @@ export default {
     }
   },
   created() {
+    document.title = this.$route.params.streamer.toUpperCase() + " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     this.debouncedGetStreams = _.debounce(this.getStreams, 1000);
   },
   watch: {
@@ -125,15 +126,13 @@ export default {
     },
     loadMore() {
       this.busy = true;
-      setTimeout(() => {
-        this.getList();
-      }, 1000);
+      setTimeout(() => this.getList(), 1000);
     },
     getList() {
       let url = `${process.env.VUE_APP_URL}/streams`;
       let params = { params: this.parameters };
       if (this.searchPhrase) {
-        url = `${process.env.VUE_APP_URL}/search`;
+        url += "/search";
         params = { params: { query: this.searchPhrase, streamer: this.$route.params.streamer } };
       }
       if (!this.endOfList)
@@ -151,3 +150,9 @@ export default {
   }
 };
 </script>
+
+<style>
+.loader {
+  height: 50px;
+}
+</style>

@@ -45,7 +45,7 @@ export default {
   computed: {
     lazySrc() {
       try {
-        return require("@/assets/image/misc/" + "placeholder.jpg");
+        return require("@/assets/" + "placeholder.jpg");
       } catch (e) {
         return null;
       }

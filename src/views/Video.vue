@@ -19,9 +19,14 @@
         <v-flex xs12 md9 class="mb-4">
           <v-img :aspect-ratio="16 / 9">
             <v-layout column fill-height>
-              <video-player @info="updateInfo" />
+              <video-player @info="updateInfo" @copied="updateInfo" />
             </v-layout>
           </v-img>
+          <!--<v-img :aspect-ratio="16 / 9" v-if="false">
+            <v-layout column fill-height>
+              <clips-player @info="updateInfo" @copied="updateInfo" />
+            </v-layout>
+          </v-img>-->
         </v-flex>
         <v-flex xs12 md3 class="mb-4">
           <v-layout wrap>
@@ -36,8 +41,9 @@
 </template>
 <script>
 import VideoPlayer from "@/components/VideoPlayer";
+import ClipsPlayer from "@/components/ClipPlayer";
 export default {
-  components: { VideoPlayer },
+  components: { ClipsPlayer, VideoPlayer },
   data() {
     return {
       stream: {},
@@ -65,6 +71,11 @@ export default {
   methods: {
     updateInfo(info) {
       this.stream = info;
+      document.title =
+        info.title +
+        " | " +
+        this.$route.params.streamer.toUpperCase() +
+        " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     }
   }
 };
