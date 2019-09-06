@@ -55,7 +55,7 @@ export default {
     },
     headerImage() {
       try {
-        return require("@/assets/" + this.$route.params.streamer + ".jpg");
+        return require(`@/assets/img/header/${this.$route.params.streamer}.jpg`);
       } catch (e) {
         return null;
       }
