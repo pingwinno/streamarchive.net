@@ -23,12 +23,12 @@
               <div>
                 <v-btn
                   :disabled="!!searchPhrase"
-                  @click="parameters.order === 'desc' ? (parameters.order = 'asc') : (parameters.order = 'desc')"
+                  @click="parameters.sort === 'desc' ? (parameters.sort = 'asc') : (parameters.sort = 'desc')"
                   fab
                   small
                   flat
                 >
-                  <v-icon class="sort-button" :class="{ inverted: parameters.order === 'asc' }">
+                  <v-icon class="sort-button" :class="{ inverted: parameters.sort === 'asc' }">
                     arrow_downward
                   </v-icon>
                 </v-btn>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import _ from "lodash";
 import Preview from "@/components/Preview";
 export default {
@@ -84,16 +85,13 @@ export default {
       streams: [],
       parameters: {
         streamer: this.$route.params.streamer,
-        order: "desc",
+        sort: "desc",
         order_by: "date",
         page: 0
       }
     };
   },
   computed: {
-    baseUrl() {
-      return `${this.$endpoints[this.$route.params.streamer]}`;
-    },
     headerImage() {
       try {
         return require("@/assets/" + this.$route.params.streamer + ".jpg");
@@ -110,7 +108,7 @@ export default {
     searchPhrase() {
       this.debouncedGetStreams();
     },
-    "parameters.order": function() {
+    "parameters.sort": function() {
       this.debouncedGetStreams();
     },
     "parameters.order_by": function() {
@@ -136,12 +134,12 @@ export default {
         params = { params: { query: this.searchPhrase, streamer: this.$route.params.streamer } };
       }
       if (!this.endOfList)
-        this.$http.get(url, params).then(response => {
+        axios.get(url, params).then(response => {
           if (this.searchPhrase) {
-            this.streams = response.body;
+            this.streams = response.data;
             this.endOfList = true;
-          } else if (response.body.length !== 0) {
-            this.streams = [...this.streams, ...response.body];
+          } else if (response.data.length !== 0) {
+            this.streams = [...this.streams, ...response.data];
             this.busy = false;
             this.parameters.page += 1;
           } else this.endOfList = true;

@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import axios from "axios";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 window.videojs = videojs;
@@ -28,11 +29,14 @@ export default {
     };
   },
   mounted() {
-    this.baseUrl = this.$endpoints[this.$route.params.streamer];
+    let streamer = this.$route.params.streamer;
+    let uuid = this.$route.params.uuid;
+    let baseUrl = this.$endpoints[streamer];
     let vm = this;
-    this.options.sources[0].src = `${this.baseUrl}/streams/${this.$route.params.streamer}/${
-      this.$route.params.uuid
-    }/index-dvr.m3u8`;
+
+    let url = `/streams/${uuid}`;
+    let timelinePreviewUrl = `${baseUrl}/streams/${streamer}/${uuid}/timeline_preview/`;
+    this.options.sources[0].src = `${baseUrl}/streams/${streamer}/${uuid}/index-dvr.m3u8`;
 
     this.player = videojs(this.$refs.videoPlayer, this.options, function() {
       let Button = videojs.getComponent("Button");
@@ -46,9 +50,7 @@ export default {
             .then(() => (vm.snackbar = true))
             .catch(err => alert(err));
         },
-        buildCSSClass() {
-          return "vjs-control vjs-button vjs-menu-button vjs-icon-share";
-        }
+        buildCSSClass: () => "vjs-control vjs-button vjs-menu-button vjs-icon-share"
       });
       videojs.registerComponent("shareButton", shareButton);
 
@@ -67,14 +69,18 @@ export default {
       videojs.registerComponent("badge", badge);
 
       let controlBar = this.controlBar;
+
       controlBar.addChild("shareButton");
-      controlBar
-        .el()
-        .insertBefore(controlBar.getChild("shareButton").el(), controlBar.getChild("playbackRateMenuButton").el());
+      let insertedShareButton = controlBar.getChild("shareButton").el();
+      let speedRate = controlBar.getChild("playbackRateMenuButton").el();
+      controlBar.el().insertBefore(insertedShareButton, speedRate);
 
       controlBar.addChild("badge");
-      controlBar.el().insertBefore(controlBar.getChild("badge").el(), controlBar.getChild("customControlSpacer").el());
+      let insertedBadge = controlBar.getChild("badge").el();
+      let spacer = controlBar.getChild("customControlSpacer").el();
+      controlBar.el().insertBefore(insertedBadge, spacer);
 
+      // noinspection JSUnresolvedFunction
       this.hotkeys({
         volumeStep: 0.1,
         seekStep: 5,
@@ -82,14 +88,10 @@ export default {
         enableModifiersForNumbers: false
       });
 
-      let url = `/streams/${vm.$route.params.uuid}`;
-      let timelinePreviewUrl = `${vm.baseUrl}/streams/${vm.$route.params.streamer}/${
-        vm.$route.params.uuid
-      }/timeline_preview/`;
-      vm.$http.get(process.env.VUE_APP_URL + url).then(response => {
-        vm.$emit("info", response.body);
+      axios.get(process.env.VUE_APP_URL + url).then(response => {
+        vm.$emit("info", response.data);
         let thumbnails = {};
-        for (let i = 0; i <= response.body.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` };
+        for (let i = 0; i <= response.data.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` };
         this["thumbnails"](thumbnails, timelinePreviewUrl);
       });
     });

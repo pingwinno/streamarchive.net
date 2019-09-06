@@ -8,6 +8,10 @@ import "video.js/dist/video-js.css";
 window.videojs = videojs;
 require("videojs-offset");
 export default {
+  props: {
+    start: Number,
+    end: Number
+  },
   name: "ClipsPlayer",
   data() {
     return {
@@ -21,11 +25,38 @@ export default {
     };
   },
   mounted() {
-    this.baseUrl = this.$endpoints[this.$route.params.streamer];
-    this.options.sources[0].src = `${this.baseUrl}/streams/${this.$route.params.streamer}/${this.$route.params.uuid}/index-dvr.m3u8`;
-    this.player = videojs(this.$refs.videoPlayer, this.options, function() { this.offset({ start: 0, end: 120 }); });
+    let streamer = this.$route.params.streamer;
+    let uuid = this.$route.params.uuid;
+    let baseUrl = this.$endpoints[streamer];
+    let start = this.start;
+    let end = this.end;
+
+    let clipUrl = `${process.env.VUE_APP_CLIP_URL}/clips/${streamer}/${uuid}`;
+    this.options.sources[0].src = `${baseUrl}/streams/${streamer}/${uuid}/index-dvr.m3u8`;
+
+    this.player = videojs(this.$refs.videoPlayer, this.options, function() {
+      this.offset({ start: start, end: end });
+
+      let Button = videojs.getComponent("Button");
+      let clip = videojs.extend(Button, {
+        constructor() {
+          Button.apply(this, arguments);
+        },
+        handleClick: () => window.open(clipUrl),
+        buildCSSClass: () => "vjs-control vjs-button vjs-menu-button vjs-icon-share"
+      });
+      videojs.registerComponent("clip", clip);
+
+      let controlBar = this.controlBar;
+      controlBar.addChild("clip");
+      let insertedCLip = controlBar.getChild("clip").el();
+      let speedRate = controlBar.getChild("playbackRateMenuButton").el();
+      controlBar.el().insertBefore(insertedCLip, speedRate);
+    });
   },
-  beforeDestroy() { if (this.player) this.player.dispose(); }
+  beforeDestroy() {
+    if (this.player) this.player.dispose();
+  }
 };
 </script>
 
