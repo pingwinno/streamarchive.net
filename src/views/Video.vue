@@ -1,4 +1,3 @@
-<!--suppress ES6ModulesDependencies, JSUnresolvedVariable -->
 <template>
   <div>
     <v-parallax height="300" :src="headerImage" style="background: #202020">
@@ -20,26 +19,7 @@
         <v-flex xs12 md9 class="mb-4">
           <v-img :aspect-ratio="16 / 9">
             <v-layout column fill-height>
-              <video-player @info="updateInfo" @copied="updateInfo" />
-            </v-layout>
-          </v-img>
-
-          <v-layout>
-            <v-flex xs4><v-text-field type="number" min="0" v-model="start"/></v-flex>
-            <v-flex xs4><v-text-field type="number" :min="start" :max="stream.duration" v-model="end"/></v-flex>
-            <v-flex xs4>
-              <v-btn :disabled="end - start > 120 || end < 0 || start < 0" flat fab @click="openClip()">
-                <v-icon>{{ clip ? "replay" : "movie_creation" }}</v-icon>
-              </v-btn>
-              <v-btn v-if="clip" flat fab @click="closeClip()">
-                <v-icon>clear</v-icon>
-              </v-btn>
-            </v-flex>
-          </v-layout>
-
-          <v-img :aspect-ratio="16 / 9" v-if="clip">
-            <v-layout column fill-height>
-              <clips-player :start="+start" :end="+end" />
+              <video-player @info="updateInfo" />
             </v-layout>
           </v-img>
         </v-flex>
@@ -56,15 +36,11 @@
 </template>
 <script>
 import VideoPlayer from "@/components/VideoPlayer";
-import ClipsPlayer from "@/components/ClipPlayer";
 export default {
-  components: { ClipsPlayer, VideoPlayer },
+  components: { VideoPlayer },
   data() {
     return {
-      stream: {},
-      start: 0,
-      end: 10,
-      clip: false
+      stream: {}
     };
   },
   computed: {
@@ -93,13 +69,6 @@ export default {
         " | " +
         this.$route.params.streamer.toUpperCase() +
         " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
-    },
-    openClip() {
-      this.clip = false;
-      this.clip = true;
-    },
-    closeClip() {
-      this.clip = false;
     }
   }
 };

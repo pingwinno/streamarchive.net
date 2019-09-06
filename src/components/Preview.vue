@@ -45,13 +45,13 @@ export default {
   computed: {
     lazySrc() {
       try {
-        return require("@/assets/" + "placeholder.jpg");
+        return require("@/assets/img/placeholder.jpg");
       } catch (e) {
         return null;
       }
     },
     baseUrl() {
-      return `${this.$endpoints[this.streamer]}`;
+      return this.$endpoints[this.streamer];
     },
 
     defaultImage() {
@@ -109,11 +109,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.holder {
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
-  user-select: none;
-}
-</style>

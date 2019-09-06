@@ -40,7 +40,7 @@
       </v-hover>
     </div>
     <v-container fluid id="info">
-      <div class="headline text-xs-center font-weight-bold text-uppercase" style="width: 100%">StreamArchive</div>
+      <div class="headline text-xs-center font-weight-bold text-uppercase fill-width">StreamArchive</div>
       <span class="display-1 d-block">О проекте</span>
       <span class="body-1 d-block pb-3">
         Всем драсьте. Мы - маленькая команда OpenStreamArchive. Месяцы работы, тонны перекопанного кода (спасибо твичу)
@@ -122,29 +122,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.overlap {
-  position: absolute;
-  opacity: 0.5;
-  width: 100%;
-}
-
-.toInfo {
-  background: rgba(0, 0, 0, 0.3);
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-}
-
-.half-fade-enter-active,
-.half-fade-leave-active {
-  opacity: 0.5;
-  transition: opacity 0.5s;
-}
-
-.half-fade-enter,
-.half-fade-leave-to {
-  opacity: 0;
-}
-</style>

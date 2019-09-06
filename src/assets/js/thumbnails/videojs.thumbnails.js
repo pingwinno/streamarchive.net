@@ -34,7 +34,7 @@
       return el;
     },
     getVisibleWidth = function(el, width) {
-      var clip;
+      let clip;
 
       if (width) {
         return parseFloat(width);
@@ -66,12 +66,12 @@
    * register the thubmnails plugin
    */
   videojs.registerPlugin("thumbnails", function(options, path) {
-    var div, settings, img, player, progressControl, duration, moveListener, moveCancel;
+    let div, settings, img, player, progressControl, duration, moveListener, moveCancel;
     settings = extend({}, defaults, options);
     player = this;
 
     (function() {
-      var progressControl, addFakeActive, removeFakeActive;
+      let progressControl, addFakeActive, removeFakeActive;
       // Android doesn't support :active and :hover on non-anchor and non-button elements
       // so, we need to fake the :active selector for thumbnails to show up.
       if (navigator.userAgent.toLowerCase().indexOf("android") !== -1) {
@@ -110,12 +110,12 @@
     duration = player.duration();
 
     // when the container is MP4
-    player.on("durationchange", function(event) {
+    player.on("durationchange", function() {
       duration = player.duration();
     });
 
     // when the container is HLS
-    player.on("loadedmetadata", function(event) {
+    player.on("loadedmetadata", function() {
       duration = player.duration();
     });
 
@@ -124,7 +124,7 @@
     progressControl.el().appendChild(div);
 
     moveListener = function(event) {
-      var mouseTime, time, active, left, setting, pageX, right, width, halfWidth, pageXOffset, clientRect;
+      let mouseTime, time, active, left, setting, pageX, right, width, halfWidth, pageXOffset, clientRect;
       active = 0;
       pageXOffset = getScrollOffset().x;
       clientRect = offsetParent(progressControl.el()).getBoundingClientRect();
@@ -152,10 +152,10 @@
         }
       }
       setting = settings[active];
-      if (setting.src && img.src != setting.src) {
+      if (setting.src && img.src !== setting.src) {
         img.src = path + setting.src;
       }
-      if (setting.style && img.style != setting.style) {
+      if (setting.style && img.style !== setting.style) {
         extend(img.style, setting.style);
       }
 
@@ -176,7 +176,7 @@
     progressControl.on("mousemove", moveListener);
     progressControl.on("touchmove", moveListener);
 
-    moveCancel = function(event) {
+    moveCancel = function() {
       div.style.left = "-1000px";
     };
 

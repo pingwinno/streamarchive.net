@@ -21,13 +21,7 @@
                 item-value="param"
               ></v-select>
               <div>
-                <v-btn
-                  :disabled="!!searchPhrase"
-                  @click="parameters.sort === 'desc' ? (parameters.sort = 'asc') : (parameters.sort = 'desc')"
-                  fab
-                  small
-                  flat
-                >
+                <v-btn :disabled="!!searchPhrase" @click="toggleSort()" fab small flat>
                   <v-icon class="sort-button" :class="{ inverted: parameters.sort === 'asc' }">
                     arrow_downward
                   </v-icon>
@@ -35,7 +29,6 @@
               </div>
             </v-flex>
             <v-flex xs7 md6 d-flex>
-              <!--suppress CheckEmptyScriptTag -->
               <v-text-field class="centered-input" text-center placeholder="search" v-model="searchPhrase" clearable />
             </v-flex>
           </v-layout>
@@ -94,7 +87,7 @@ export default {
   computed: {
     headerImage() {
       try {
-        return require("@/assets/" + this.$route.params.streamer + ".jpg");
+        return require(`@/assets/img/header/${this.$route.params.streamer}.jpg`);
       } catch (e) {
         return null;
       }
@@ -144,13 +137,10 @@ export default {
             this.parameters.page += 1;
           } else this.endOfList = true;
         });
+    },
+    toggleSort() {
+      this.parameters.sort === "desc" ? (this.parameters.sort = "asc") : (this.parameters.sort = "desc");
     }
   }
 };
 </script>
-
-<style>
-.loader {
-  height: 50px;
-}
-</style>
