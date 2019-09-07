@@ -1,12 +1,14 @@
 import Vue from "vue";
 import axios from "axios";
-import InfiniteScroll from "vue-infinite-scroll";
+import "./plugins/bus";
 import "./plugins/vuetify";
+import "./plugins/infiniteScroll";
+import store from "./plugins/store";
+import router from "./plugins/router";
+
 import App from "./App.vue";
-import router from "./router";
 
 Vue.config.productionTip = false;
-Vue.use(InfiniteScroll);
 
 let endpoints = {};
 axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
@@ -16,6 +18,7 @@ axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
 
   new Vue({
     router,
+    store,
     render: h => h(App)
   }).$mount("#app");
 });

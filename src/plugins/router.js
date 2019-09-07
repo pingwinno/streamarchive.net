@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Index from "./views/Index.vue";
-import Main from "./views/Main.vue";
-import Video from "./views/Video.vue";
-import NotFound from "./views/NotFound.vue";
+import Index from "../views/Index.vue";
+import Main from "../views/Main.vue";
+import Video from "../views/Video.vue";
+import NotFound from "../views/NotFound.vue";
 
 Vue.use(Router);
 
