@@ -31,7 +31,7 @@ export default {
     let start = this.start;
     let end = this.end;
 
-    let clipUrl = `${process.env.VUE_APP_CLIP_URL}/clips/${streamer}/${uuid}`;
+    let clipUrl = `${process.env.VUE_APP_CLIP_URL}/clips/${streamer}/${uuid}?start=${start}&end=${end}`;
     this.options.sources[0].src = `${baseUrl}/streams/${streamer}/${uuid}/index-dvr.m3u8`;
 
     this.player = videojs(this.$refs.videoPlayer, this.options, function() {
