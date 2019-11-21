@@ -1,14 +1,7 @@
 <template>
   <v-flex xs6 md4 lg3>
-    <router-link :to="{ name: 'video-player.vue', params: { uuid: id, streamer: streamer } }" tag="div" class="pointer">
-      <v-img
-        :aspect-ratio="16 / 9"
-        :src="source"
-        @mouseover="onHover()"
-        @error="onMouseOut()"
-        @mouseout="onMouseOut()"
-        :lazy-src="lazySrc"
-      >
+    <router-link :to="{ name: 'video-player.vue', params: { uuid, streamer } }" tag="div" class="pointer">
+      <v-img :aspect-ratio="16 / 9" :src="source" @mouseover="onHover()" @error="onMouseOut()" @mouseout="onMouseOut()">
         <template v-slot:placeholder>
           <v-layout fill-height align-center justify-center ma-0>
             <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
@@ -36,35 +29,28 @@
 <script>
 export default {
   props: {
-    id: String,
+    uuid: String,
     game: String,
     title: String,
     date: String,
     duration: Number
   },
   computed: {
-    lazySrc() {
-      try {
-        return require("@/assets/img/placeholder.jpg");
-      } catch (e) {
-        return null;
-      }
-    },
     baseUrl() {
       return this.$endpoints[this.streamer];
     },
 
     defaultImage() {
-      return `${this.baseUrl}/streams/${this.streamer}/${this.id}/preview.jpg`;
+      return `${this.baseUrl}/streams/${this.streamer}/${this.uuid}/preview.jpg`;
     },
     previews() {
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => {
-        return `${this.baseUrl}/streams/${this.streamer}/${this.id}/animated_preview/preview${item}.jpg`;
+        return `${this.baseUrl}/streams/${this.streamer}/${this.uuid}/animated_preview/preview${item}.jpg`;
       });
     },
     durationString() {
       let date = new Date(null);
-      date.setSeconds(this["duration"]);
+      date.setSeconds(+this.duration);
       return date.toISOString().substr(11, 8);
     },
     dateString() {
@@ -85,7 +71,7 @@ export default {
     };
   },
   mounted() {
-    this.source = `${this.baseUrl}/streams/${this.streamer}/${this.id}/preview.jpg`;
+    this.source = `${this.baseUrl}/streams/${this.streamer}/${this.uuid}/preview.jpg`;
   },
   methods: {
     onHover() {

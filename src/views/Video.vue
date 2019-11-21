@@ -1,13 +1,9 @@
 <template>
   <div>
-    <v-parallax height="300" :src="headerImage" style="background: #202020">
+    <v-parallax height="300" :src="headerImage" class="header">
       <v-layout fill-height align-center column justify-center>
-        <router-link
-          tag="h1"
-          :to="`/${$route.params.streamer}`"
-          class="display-3 font-weight-thin mb-1 text-uppercase pointer link"
-        >
-          {{ $route.params.streamer }}
+        <router-link tag="h1" :to="`/${streamer}`" class="display-3 font-weight-thin text-uppercase pointer link">
+          {{ streamer }}
         </router-link>
         <router-link tag="h4" to="/" class="title font-weight-bold text-uppercase pointer link">
           StreamArchive
@@ -44,6 +40,9 @@ export default {
     };
   },
   computed: {
+    streamer() {
+      return this.$route.params.streamer;
+    },
     dateString() {
       let months = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
       if (!this.stream.date) return;
@@ -55,7 +54,7 @@ export default {
     },
     headerImage() {
       try {
-        return require(`@/assets/img/header/${this.$route.params.streamer}.jpg`);
+        return require(`@/assets/img/header/${this.streamer}.jpg`);
       } catch (e) {
         return null;
       }
@@ -65,10 +64,7 @@ export default {
     updateInfo(info) {
       this.stream = info;
       document.title =
-        info.title +
-        " | " +
-        this.$route.params.streamer.toUpperCase() +
-        " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
+        `${info.title} | ${this.streamer.toUpperCase()}` + " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     }
   }
 };

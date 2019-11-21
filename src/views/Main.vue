@@ -1,46 +1,48 @@
 <template>
   <div>
-    <v-parallax :src="headerImage" style="background: #202020">
-      <v-layout align-center column justify-center>
-        <v-layout fill-height align-center justify-center column>
-          <h1 class="display-3 font-weight-thin mb-1 text-uppercase">{{ $route.params.streamer }}</h1>
-          <router-link tag="h4" to="/" class="title font-weight-bold text-uppercase pointer link">
-            StreamArchive
-          </router-link>
-        </v-layout>
-        <v-spacer />
-        <v-flex style="width: 100%" shrink>
-          <v-layout wrap align-center>
-            <v-flex xs5 md3 d-flex>
-              <v-select
-                :items="sortItems"
-                v-model="parameters.order_by"
-                label="Сортировать по"
-                :disabled="!!searchPhrase"
-                item-text="title"
-                item-value="param"
-              ></v-select>
-              <div>
-                <v-btn :disabled="!!searchPhrase" @click="toggleSort()" fab small flat>
-                  <v-icon class="sort-button" :class="{ inverted: parameters.sort === 'asc' }">
-                    arrow_downward
-                  </v-icon>
-                </v-btn>
-              </div>
-            </v-flex>
-            <v-flex xs7 md6 d-flex>
-              <v-text-field class="centered-input" text-center placeholder="search" v-model="searchPhrase" clearable />
-            </v-flex>
-          </v-layout>
-        </v-flex>
+    <v-parallax :src="headerImage" class="header">
+      <v-layout fill-height align-center justify-center column>
+        <h1 class="display-3 font-weight-thin text-uppercase">{{ $route.params.streamer }}</h1>
+        <router-link tag="h4" to="/" class="title font-weight-bold text-uppercase pointer link">
+          StreamArchive
+        </router-link>
       </v-layout>
+      <v-spacer />
+      <v-flex shrink>
+        <v-layout wrap align-center class="inputs">
+          <v-flex xs5 md3 d-flex>
+            <v-select
+              :items="sortItems"
+              v-model="parameters.order_by"
+              label="Сортировать по"
+              :disabled="!!searchPhrase"
+              item-text="title"
+              item-value="param"
+            />
+            <v-flex align-self-center>
+              <v-btn :disabled="!!searchPhrase" @click="toggleSort()" fab small flat>
+                <v-icon class="sort-button" :class="{ inverted: parameters.sort === 'asc' }">arrow_downward</v-icon>
+              </v-btn>
+            </v-flex>
+          </v-flex>
+          <v-flex xs7 md6 d-flex>
+            <v-text-field class="centered-input" text-center placeholder="search" v-model="searchPhrase" clearable />
+          </v-flex>
+        </v-layout>
+      </v-flex>
     </v-parallax>
     <v-container fluid grid-list-md>
+      <v-snackbar v-model="notHosted" color="warning" :timeout="0" multi-line bottom>
+        <v-icon class="mr-2" flat @click="notHosted = false">warning</v-icon>
+        Этот архив никто не хостит. Если вы заинтересованы в поддержке архива - свяжитесь со стаффом сайта.
+        <v-spacer />
+        <v-icon flat @click="notHosted = false">close</v-icon>
+      </v-snackbar>
       <v-layout row wrap justify-center>
         <preview
           v-for="stream in streams"
           :key="stream._id"
-          :id="stream._id"
+          :uuid="stream._id"
           :game="stream.game"
           :title="stream.title"
           :date="stream.date"
@@ -67,6 +69,7 @@ export default {
   components: { Preview },
   data() {
     return {
+      notHosted: false,
       busy: false,
       endOfList: false,
       sortItems: [
@@ -94,6 +97,7 @@ export default {
     }
   },
   created() {
+    this.notHosted = !this.$hosted[this.$route.params.streamer];
     document.title = this.$route.params.streamer.toUpperCase() + " | StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     this.debouncedGetStreams = _.debounce(this.getStreams, 1000);
   },

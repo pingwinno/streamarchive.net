@@ -1,40 +1,63 @@
 .pointer {
   cursor: pointer;
 }
+
+.header {
+  background: #202020;
+  //mask-image: linear-gradient(rgba(0,0,0,1) calc(100% - 8px), rgba(0,0,0,0) 100%);
+}
+
 .centered-input input {
   text-align: center;
 }
+
 .donation {
   position: fixed;
   bottom: 0;
   right: 0;
+  z-index: 10;
+
   button {
     background: linear-gradient(to bottom right, purple, black) !important;
   }
 }
+
 .fill-width {
   width: 100%;
 }
+
 .sort-button {
-  transition: all 500ms;
+  transition: transform 500ms;
 }
+
 .inverted {
   transform: rotate(180deg);
 }
+
 .link {
   color: white;
   text-decoration: none;
-  transition: color 0.5s;
+  transition: color 0.3s;
+
   &:hover {
     color: grey;
   }
 }
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s;
 }
-.fade-enter,
-.fade-leave-to {
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+.header-enter-active, .header-leave-active {
+  transition: all .3s;
+}
+
+.header-enter, .header-leave-to {
+  transform: translateY(-100%);
   opacity: 0;
 }
 
@@ -48,18 +71,8 @@
   background: rgba(0, 0, 0, 0.3);
   left: 50%;
   bottom: 0;
+  margin-bottom: 8px;
   transform: translateX(-50%);
-}
-
-.half-fade-enter-active,
-.half-fade-leave-active {
-  opacity: 0.5;
-  transition: opacity 0.5s;
-}
-
-.half-fade-enter,
-.half-fade-leave-to {
-  opacity: 0;
 }
 
 .loader {
@@ -70,4 +83,45 @@
   background: rgba(0, 0, 0, 0.6);
   border-radius: 4px;
   user-select: none;
+}
+
+.page-height {
+  height: 100vh;
+}
+
+.index-tab-title, .index-tab-host-text {
+  display: block;
+}
+
+.index-tab {
+  background-color: transparent;
+
+  .index-tab-title {
+    opacity: 1;
+  }
+
+  .index-tab-host-text {
+    opacity: 0;
+  }
+
+}
+
+@media all and (min-width: 960px) {
+  .index-tab {
+    background-color: rgba(silver, .5);
+    transition: background-color .5s;
+
+    .index-tab-title {
+      opacity: 0;
+      transition: opacity .5s;
+    }
+
+    &:hover {
+      background-color: transparent;
+
+      .index-tab-title {
+        opacity: 1;
+      }
+    }
+  }
 }

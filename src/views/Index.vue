@@ -1,43 +1,26 @@
 <template>
   <div>
     <div class="d-inline-flex" style="position: relative">
-      <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')"><v-icon>arrow_downward</v-icon></v-btn>
-      <v-hover class="pointer" v-for="streamer in $streamers" :key="streamer" style="height: 100vh">
-        <v-card
-          slot-scope="{ hover }"
-          :width="window.width / $streamers.length"
-          style="height: 100vh; border-radius: 0"
-          class="elevation-0"
-        >
-          <router-link :to="`/${streamer}`" tag="div" style="height: 100vh">
-            <v-img :src="require(`@/assets/img/main/${streamer}.jpg`)" style="height: 100vh">
-              <template v-slot:placeholder>
-                <v-layout fill-height align-center justify-center ma-0>
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                </v-layout>
-              </template>
-
-              <div class="hidden-sm-and-down">
-                <transition name="half-fade">
-                  <div v-if="!hover" class="grey overlap fill-height"></div>
-                </transition>
-                <transition name="fade">
-                  <div v-if="hover" class="fill-height text-xs-center fill-width pt-5">
-                    <span class="display-2 text-uppercase">{{ streamer }}</span>
-                  </div>
-                </transition>
-              </div>
-              <div class="hidden-md-and-up">
-                <transition name="fade">
-                  <div class="fill-height text-xs-center fill-width pt-5">
-                    <span class="display-2 text-uppercase">{{ streamer }}</span>
-                  </div>
-                </transition>
-              </div>
-            </v-img>
-          </router-link>
-        </v-card>
-      </v-hover>
+      <v-btn absolute fab flat class="toInfo" @click="slideToInfo()"><v-icon>arrow_downward</v-icon></v-btn>
+      <router-link
+        :to="`/${streamer}`"
+        tag="div"
+        class="pointer"
+        v-for="streamer in $streamers"
+        :key="streamer"
+        :style="{ width: window.width / $streamers.length + 'px' }"
+      >
+        <v-img :src="indexImage(streamer)" class="page-height">
+          <template v-slot:placeholder>
+            <v-layout fill-height align-center justify-center ma-0>
+              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+            </v-layout>
+          </template>
+          <div class="fill-height text-xs-center fill-width pt-5 index-tab">
+            <span class="display-2 text-uppercase index-tab-title">{{ streamer }}</span>
+          </div>
+        </v-img>
+      </router-link>
     </div>
     <v-container fluid id="info">
       <div class="headline text-xs-center font-weight-bold text-uppercase fill-width">StreamArchive</div>
@@ -115,6 +98,16 @@ export default {
     window.removeEventListener("resize", this.handleResize);
   },
   methods: {
+    indexImage(streamer) {
+      try {
+        return require(`@/assets/img/main/${streamer}.jpg`);
+      } catch (e) {
+        return "https://picsum.photos/id/1011/1024";
+      }
+    },
+    slideToInfo() {
+      this.$vuetify.goTo("#info");
+    },
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;

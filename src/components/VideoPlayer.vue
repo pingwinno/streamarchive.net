@@ -1,8 +1,5 @@
 <template>
-  <div class="video-js">
-    <video ref="videoPlayer" class="video-js"></video>
-    <v-snackbar v-model="snackbar" :bottom="true" :timeout="2000">Ссылка скопирована!</v-snackbar>
-  </div>
+  <video ref="videoPlayer" class="video-js"></video>
 </template>
 
 <script>
@@ -17,7 +14,6 @@ export default {
   name: "VideoPlayer",
   data() {
     return {
-      snackbar: false,
       player: null,
       options: {
         autoplay: true,
@@ -47,7 +43,7 @@ export default {
         handleClick() {
           navigator.clipboard
             .writeText(window.location.href)
-            .then(() => (vm.snackbar = true))
+            .then(() => vm.$bus.emit("showAlert", { text: "Ссылка скопирована!" }))
             .catch(err => alert(err));
         },
         buildCSSClass: () => "vjs-control vjs-button vjs-menu-button vjs-icon-share"

@@ -15,6 +15,7 @@ axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
   endpoints = Object.fromEntries(new Map(response.data.map(item => [item.name, item["storageEndpoint"]])));
   Vue.prototype.$endpoints = endpoints;
   Vue.prototype.$streamers = Object.keys(endpoints);
+  Vue.prototype.$hosted = Object.fromEntries(new Map(response.data.map(item => [item.name, item.hosted])));
 
   new Vue({
     router,

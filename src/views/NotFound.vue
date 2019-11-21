@@ -1,5 +1,5 @@
 <template>
-  <v-img src="https://picsum.photos/id/172/1920/1080" style="width: 100vw; height: 100vh">
+  <v-img src="https://picsum.photos/id/172/1920/1080" class="fill-width page-height">
     <template v-slot:placeholder>
       <v-layout fill-height align-center justify-center ma-0 pa-0>
         <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
