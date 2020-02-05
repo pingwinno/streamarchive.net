@@ -2,10 +2,10 @@
   <div>
     <div class="d-inline-flex" style="position: relative">
       <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')"><v-icon>arrow_downward</v-icon></v-btn>
-      <v-hover class="pointer" v-for="streamer in $streamers" :key="streamer" style="height: 100vh">
+      <v-hover class="pointer" v-for="streamer in filterStreamers($streamers)" :key="streamer" style="height: 100vh">
         <v-card
           slot-scope="{ hover }"
-          :width="window.width / $streamers.length"
+          :width="window.width / filterStreamers($streamers).length"
           style="height: 100vh; border-radius: 0"
           class="elevation-0"
         >
@@ -110,6 +110,7 @@ export default {
     document.title = "StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
+    console.log(this);
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -118,6 +119,17 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
+    },
+    filterStreamers(streamers) {
+      return streamers.filter(streamer => {
+        let image = "";
+        try {
+          image = require(`@/assets/img/main/${streamer}.jpg`);
+        } catch {
+          return false;
+        }
+        return !!image;
+      });
     }
   }
 };
