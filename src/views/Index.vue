@@ -112,7 +112,6 @@ export default {
     document.title = "StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
-    console.log(this.streamersLength);
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
