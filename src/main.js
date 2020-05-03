@@ -13,7 +13,19 @@ Vue.config.productionTip = false;
 let endpoints = {};
 axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
   endpoints = Object.fromEntries(new Map(response.data.map(item => [item.name, item["storageEndpoint"]])));
-  endpoints = Object.fromEntries(Object.entries(endpoints).filter(item => item[1] !== "https://idinahui.com"));
+  endpoints = Object.fromEntries(
+    Object.entries(endpoints)
+      .filter(item => item[1] !== "https://idinahui.com")
+      .map(([streamer, url]) => {
+        const lastUrlSymbol = url.length - 1
+        const isEndWithSlash = url[lastUrlSymbol] === "/";
+        if (isEndWithSlash) {
+          return [streamer, url.slice(0, lastUrlSymbol)];
+        }
+        return [streamer, url];
+      })
+  );
+  console.log(endpoints)
   Vue.prototype.$endpoints = endpoints;
   Vue.prototype.$streamers = Object.keys(endpoints);
 
