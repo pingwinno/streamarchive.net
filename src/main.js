@@ -25,7 +25,6 @@ axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
         return [streamer, url];
       })
   );
-  console.log(endpoints)
   Vue.prototype.$endpoints = endpoints;
   Vue.prototype.$streamers = Object.keys(endpoints);
 
