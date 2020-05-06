@@ -17,7 +17,7 @@ axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
     Object.entries(endpoints)
       .filter(item => item[1] !== "https://idinahui.com")
       .map(([streamer, url]) => {
-        const lastUrlSymbol = url.length - 1
+        const lastUrlSymbol = url.length - 1;
         const isEndWithSlash = url[lastUrlSymbol] === "/";
         if (isEndWithSlash) {
           return [streamer, url.slice(0, lastUrlSymbol)];

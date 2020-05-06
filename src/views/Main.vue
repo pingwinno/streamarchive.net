@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-parallax :src="headerImage" style="background: #202020">
+    <v-parallax :src="`${url}/img/${streamer}/background.jpg`" style="background: #202020">
       <v-layout align-center column justify-center>
         <v-layout fill-height align-center justify-center column>
           <h1 class="display-3 font-weight-thin mb-1 text-uppercase">{{ $route.params.streamer }}</h1>
@@ -85,12 +85,11 @@ export default {
     };
   },
   computed: {
-    headerImage() {
-      try {
-        return require(`@/assets/img/header/${this.$route.params.streamer}.jpg`);
-      } catch (e) {
-        return null;
-      }
+    url() {
+      return this.$store.state.enpoints[this.streamer];
+    },
+    streamer() {
+      return this.$route.params.streamer;
     }
   },
   created() {

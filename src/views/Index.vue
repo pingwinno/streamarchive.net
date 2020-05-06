@@ -131,7 +131,7 @@ export default {
     }
   },
   computed: {
-    streamers: function() {
+    streamers() {
       const streamers = Object.entries(this.$endpoints);
       return streamers;
     }

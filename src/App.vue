@@ -16,6 +16,12 @@ export default {
       let win = window.open("https://www.donationalerts.com/r/morgan008", "_blank");
       win.focus();
     }
+  },
+  created() {
+    const endpoints = this.$store.dispatch("fetchEndpoints").then(() => {
+      this.$store.commit("setEndpoints", endpoints);
+      console.log(this.$store.state);
+    });
   }
 };
 </script>
