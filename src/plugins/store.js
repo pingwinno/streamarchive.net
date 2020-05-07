@@ -32,6 +32,7 @@ const actions = {
   fetchEndpoints(context) {
     axios.get(process.env.VUE_APP_URL + "/streamers").then(response => {
       let endpoints = handleResponse(response);
+      context.commit("setEndpoints", endpoints);
     });
   }
 };

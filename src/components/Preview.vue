@@ -57,8 +57,6 @@ export default {
     defaultImage() {
       return `${this.baseUrl}/streams/${this.streamer}/${this.id}/preview.jpg`;
     },
-    //TODO:
-    //СДЕЛАТЬ ФЕТЧ СРАЗУ ВСЕХ ПРЕВЬЮШЕК
     previews() {
       return [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => {
         return `${this.baseUrl}/streams/${this.streamer}/${this.id}/animated_preview/preview${item}.jpg`;

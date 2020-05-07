@@ -18,10 +18,7 @@ export default {
     }
   },
   created() {
-    const endpoints = this.$store.dispatch("fetchEndpoints").then(() => {
-      this.$store.commit("setEndpoints", endpoints);
-      console.log(this.$store.state);
-    });
+    this.$store.dispatch("fetchEndpoints");
   }
 };
 </script>
