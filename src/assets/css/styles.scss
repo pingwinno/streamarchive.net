@@ -1,41 +1,41 @@
 .pointer {
   cursor: pointer;
 }
+
 .centered-input input {
   text-align: center;
 }
+
 .donation {
   position: fixed;
   bottom: 0;
   right: 0;
+
   button {
     background: linear-gradient(to bottom right, purple, black) !important;
   }
 }
+
 .fill-width {
   width: 100%;
 }
+
 .sort-button {
   transition: all 500ms;
 }
+
 .inverted {
   transform: rotate(180deg);
 }
+
 .link {
   color: white;
-  text-decoration: none;
+  text-decoration: underline;
   transition: color 0.5s;
+
   &:hover {
     color: grey;
   }
-}
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.5s;
-}
-.fade-enter,
-.fade-leave-to {
-  opacity: 0;
 }
 
 .overlap {
@@ -49,17 +49,6 @@
   left: 50%;
   bottom: 0;
   transform: translateX(-50%);
-}
-
-.half-fade-enter-active,
-.half-fade-leave-active {
-  opacity: 0.5;
-  transition: opacity 0.5s;
-}
-
-.half-fade-enter,
-.half-fade-leave-to {
-  opacity: 0;
 }
 
 .loader {
@@ -76,6 +65,60 @@
   margin-bottom: 8px;
 }
 
-.link {
-  text-decoration: underline;
+.fill-absolute {
+  position: absolute;
+
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+.p-relative {
+  position: relative;
+}
+
+.fullscreen-height {
+  height: 100vh;
+}
+
+.streamer-item {
+  z-index: 2;
+
+  &:hover {
+    & ~ .streamer-title {
+      opacity: 1;
+    }
+
+    & ~ .streamer-background {
+      opacity: 0;
+    }
+  }
+}
+
+.streamer-background {
+  z-index: 1;
+
+  background: grey;
+  opacity: 0.5;
+  transition: opacity 0.5s;
+}
+
+.streamer-title {
+  text-shadow: 1px 1px 2px black;
+  text-transform: uppercase;
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+@media only screen and (max-width: 959px) {
+  .streamer-title {
+    opacity: 1;
+  }
+
+  .streamer-background {
+    opacity: 0;
+  }
 }

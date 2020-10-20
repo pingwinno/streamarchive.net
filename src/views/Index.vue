@@ -1,44 +1,40 @@
 <template>
   <div>
-    <div class="d-inline-flex" style="position: relative" ref="page">
-      <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')"><v-icon>arrow_downward</v-icon></v-btn>
-      <v-hover class="pointer" v-for="[streamer, url] in streamers" :key="streamer" style="height: 100vh">
-        <v-card
-          slot-scope="{ hover }"
-          :width="window.width / streamersLength"
-          style="height: 100vh; border-radius: 0"
-          class="elevation-0"
-          ref="card"
-        >
-          <router-link :to="`/${streamer}`" tag="div" style="height: 100vh">
-            <v-img :src="`${url}/img/${streamer}/main.jpg`" style="height: 100vh" v-on:error="handleImageError">
-              <template v-slot:placeholder>
-                <v-layout fill-height align-center justify-center ma-0>
-                  <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                </v-layout>
-              </template>
+    <div class="d-inline-flex p-relative" v-if="streamers.length">
 
-              <div class="hidden-sm-and-down">
-                <transition name="half-fade">
-                  <div v-if="!hover" class="grey overlap fill-height"></div>
-                </transition>
-                <transition name="fade">
-                  <div v-if="hover" class="fill-height text-xs-center fill-width pt-5">
-                    <span class="display-2 text-uppercase">{{ streamer }}</span>
-                  </div>
-                </transition>
-              </div>
-              <div class="hidden-md-and-up">
-                <transition name="fade">
-                  <div class="fill-height text-xs-center fill-width pt-5">
-                    <span class="display-2 text-uppercase">{{ streamer }}</span>
-                  </div>
-                </transition>
-              </div>
-            </v-img>
-          </router-link>
-        </v-card>
-      </v-hover>
+      <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')">
+        <v-icon>arrow_downward</v-icon>
+      </v-btn>
+
+      <v-card
+          v-for="([streamer, url], index) in streamers"
+          :key="streamer"
+          :width="window.width / streamers.length"
+          class="fullscreen-height elevation-0 pointer"
+      >
+        <router-link :to="`/${streamer}`" tag="div" class="fullscreen-height">
+          <v-img
+              :src="`${url}/img/${streamer}/main.jpg`"
+              class="fullscreen-height"
+              v-on:error="handleImageError(index)"
+              ref="a"
+          >
+
+            <template v-slot:placeholder>
+              <v-layout fill-height align-center justify-center ma-0>
+                <v-progress-circular indeterminate color="grey lighten-5"/>
+              </v-layout>
+            </template>
+
+            <div>
+              <div class="fill-absolute streamer-item"></div>
+              <div class="fill-absolute streamer-background"></div>
+              <div class="fill-absolute streamer-title display-2 pt-5">{{ streamer }}</div>
+            </div>
+
+          </v-img>
+        </router-link>
+      </v-card>
     </div>
     <v-container fluid id="info">
       <div class="headline text-xs-center font-weight-bold text-uppercase fill-width">StreamArchive</div>
@@ -105,13 +101,14 @@ export default {
         width: 0,
         height: 0
       },
-      streamersLength: Object.entries(this.$endpoints).length
+      streamers: []
     };
   },
   created() {
     document.title = "StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
+    this.streamers = Object.entries(this.$endpoints);
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -121,19 +118,8 @@ export default {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
     },
-    handleImageError: function(src) {
-      const card = this.$refs.card[0];
-      const imgSrc = this.$refs.card[0].$children[0].$children[0].$props.src;
-      if (imgSrc === src) {
-        card.$el.style.display = "none";
-        this.streamersLength--;
-      }
-    }
-  },
-  computed: {
-    streamers() {
-      const streamers = Object.entries(this.$endpoints);
-      return streamers;
+    handleImageError(index) {
+      this.streamers = this.streamers.slice(index, 1)
     }
   }
 };

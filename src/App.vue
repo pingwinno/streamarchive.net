@@ -1,8 +1,6 @@
 <template>
   <v-app dark>
-    <transition name="fade" mode="out-in">
-      <router-view :key="$route.fullPath" />
-    </transition>
+    <router-view :key="$route.fullPath" />
     <div class="donation">
       <v-btn round class="donation" @click="openDonation"><v-icon>attach_money</v-icon>Donation</v-btn>
     </div>
@@ -16,12 +14,6 @@ export default {
       let win = window.open("https://www.donationalerts.com/r/morgan008", "_blank");
       win.focus();
     }
-  },
-  created() {
-    this.$store.dispatch("fetchEndpoints");
   }
 };
 </script>
-<style lang="scss">
-@import "./assets/css/styles";
-</style>

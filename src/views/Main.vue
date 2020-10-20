@@ -9,7 +9,7 @@
           </router-link>
         </v-layout>
         <v-spacer />
-        <v-flex style="width: 100%" shrink>
+        <v-flex class="fill-width" shrink>
           <v-layout wrap align-center>
             <v-flex xs5 md3 d-flex>
               <v-select
@@ -86,7 +86,7 @@ export default {
   },
   computed: {
     url() {
-      return this.$store.state.enpoints[this.streamer];
+      return this.$endpoints[this.streamer];
     },
     streamer() {
       return this.$route.params.streamer;
