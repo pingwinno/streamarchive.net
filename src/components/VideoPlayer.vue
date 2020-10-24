@@ -13,6 +13,8 @@ window.videojs = videojs;
 require("videojs-hotkeys");
 require("../assets/js/thumbnails/videojs.thumbnails.css");
 require("../assets/js/thumbnails/videojs.thumbnails");
+require('videojs-contrib-quality-levels');
+require('videojs-hls-quality-selector');
 export default {
   name: "VideoPlayer",
   data() {
@@ -28,15 +30,19 @@ export default {
       }
     };
   },
-  mounted() {
+  async mounted() {
     let streamer = this.$route.params.streamer;
     let uuid = this.$route.params.uuid;
     let baseUrl = this.$endpoints[streamer];
     let vm = this;
+    let hasMultiQuality;
 
     let url = `/streams/${uuid}`;
     let timelinePreviewUrl = `${baseUrl}/streams/${streamer}/${uuid}/timeline_preview/`;
-    this.options.sources[0].src = `${baseUrl}/streams/${streamer}/${uuid}/chunked/index-dvr.m3u8`;
+    const multiQualityUrl = `${baseUrl}/streams/${streamer}/${uuid}/master.m3u8`;
+    const singleQualityUrl = `${baseUrl}/streams/${streamer}/${uuid}/chunked/index-dvr.m3u8`;
+    await axios.get(multiQualityUrl).then(() => hasMultiQuality = true).catch(() => hasMultiQuality = false)
+    this.options.sources[0].src = hasMultiQuality ? multiQualityUrl: singleQualityUrl;
 
     this.player = videojs(this.$refs.videoPlayer, this.options, function() {
       let Button = videojs.getComponent("Button");
@@ -88,8 +94,12 @@ export default {
         enableModifiersForNumbers: false
       });
 
+      if (hasMultiQuality) {
+        this.qualityLevels();
+        this.hlsQualitySelector({displayCurrentQuality: true});
+      }
+
       axios.get(process.env.VUE_APP_URL + url).then(response => {
-        vm.$emit("info", response.data);
         let thumbnails = {};
         for (let i = 0; i <= response.data.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` };
         this["thumbnails"](thumbnails, timelinePreviewUrl);

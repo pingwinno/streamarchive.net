@@ -12,6 +12,8 @@
     "core-js": "^2.6.5",
     "lodash": "^4.17.15",
     "video.js": "^7.6.0",
+    "videojs-contrib-quality-levels": "^2.0.9",
+    "videojs-hls-quality-selector": "^1.1.4",
     "videojs-hotkeys": "^0.2.25",
     "videojs-offset": "^2.1.2",
     "vue": "^2.6.10",
