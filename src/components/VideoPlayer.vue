@@ -22,6 +22,13 @@ export default {
       snackbar: false,
       player: null,
       options: {
+      html5: {
+          hls: {
+            overrideNative: true
+          },
+          nativeAudioTracks: false,
+          nativeVideoTracks: false,
+        }
         autoplay: true,
         controls: true,
         controlBar: { pictureInPictureToggle: false },
