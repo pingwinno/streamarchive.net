@@ -1,19 +1,25 @@
 <template>
   <v-app dark>
-    <router-view :key="$route.fullPath" />
+    <v-toolbar app>
+      <v-toolbar-title>
+        <router-link to="/" class="font-weight-bol text-uppercase white--text">
+          StreamArchive
+        </router-link>
+      </v-toolbar-title>
+      <v-toolbar-title>
+        <router-link :to="`/${$route.params.streamer}`" class="text-uppercase subheading grey--text text--lighten-1">
+          {{ $route.params.streamer }}
+        </router-link>
+      </v-toolbar-title>
+    </v-toolbar>
+    <v-content>
+      <router-view :key="$route.fullPath" />
+    </v-content>
     <div class="donation">
-      <v-btn round class="donation" @click="openDonation"><v-icon>attach_money</v-icon>Donation</v-btn>
+      <v-btn round href="https://boosty.to/morgan008" target="_blank">
+        <v-icon>attach_money</v-icon>
+        Donation
+      </v-btn>
     </div>
   </v-app>
 </template>
-
-<script>
-export default {
-  methods: {
-    openDonation() {
-      let win = window.open("https://www.donationalerts.com/r/morgan008", "_blank");
-      win.focus();
-    }
-  }
-};
-</script>

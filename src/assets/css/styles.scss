@@ -1,3 +1,7 @@
+a {
+  text-decoration: none;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -11,17 +15,9 @@
   bottom: 0;
   right: 0;
 
-  button {
-    background: linear-gradient(to bottom right, purple, black) !important;
+  > * {
+    background: linear-gradient(to bottom right, #4286f4, black) !important;
   }
-}
-
-.fill-width {
-  width: 100%;
-}
-
-.sort-button {
-  transition: all 500ms;
 }
 
 .inverted {
@@ -38,87 +34,64 @@
   }
 }
 
-.overlap {
-  position: absolute;
-  opacity: 0.5;
-  width: 100%;
-}
-
-.toInfo {
-  background: rgba(0, 0, 0, 0.3);
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-}
-
 .loader {
   height: 50px;
 }
 
+.smooth-back {
+  background: #4286f4;
+  background: linear-gradient(135deg, #303030 20%, #4286f4);
+
+}
+
 .holder {
   background: rgba(0, 0, 0, 0.6);
-  border-radius: 4px;
   user-select: none;
 }
 
-.main-page-subtitle {
-  margin-bottom: 8px;
-}
+.card-list {
+  display: flex;
+  padding: 3rem;
+  overflow-x: auto;
 
-.fill-absolute {
-  position: absolute;
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
 
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-}
+  &::-webkit-scrollbar-thumb {
+    background: #201c29;
+    border-radius: 10px;
+    box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25), inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+  }
 
-.p-relative {
-  position: relative;
-}
-
-.fullscreen-height {
-  height: 100vh;
-}
-
-.streamer-item {
-  z-index: 2;
-
-  &:hover {
-    & ~ .streamer-title {
-      opacity: 1;
-    }
-
-    & ~ .streamer-background {
-      opacity: 0;
-    }
+  &::-webkit-scrollbar-track {
+    background: linear-gradient(90deg, darken(#4286f4, 50%), darken(#8b00ff, 40%));
   }
 }
 
-.streamer-background {
-  z-index: 1;
+.streamer-card {
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: -1rem 0 3rem #000;
+  transition: 0.2s;
+  margin: auto;
 
-  background: grey;
-  opacity: 0.5;
-  transition: opacity 0.5s;
+  &:hover {
+    transform: translateY(-1rem);
+  }
+
+  &:hover ~ .streamer-card {
+    transform: translateX(2rem);
+  }
+
+  &:not(:first-child) {
+    margin-left: -2rem;
+  }
 }
 
 .streamer-title {
   text-shadow: 1px 1px 2px black;
   text-transform: uppercase;
   text-align: center;
-
-  opacity: 0;
-  transition: opacity 0.5s;
-}
-
-@media only screen and (max-width: 959px) {
-  .streamer-title {
-    opacity: 1;
-  }
-
-  .streamer-background {
-    opacity: 0;
-  }
 }

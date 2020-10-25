@@ -4,19 +4,19 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build"
   },
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.0",
     "core-js": "^2.6.5",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.20",
     "video.js": "^7.6.0",
     "videojs-contrib-quality-levels": "^2.0.9",
     "videojs-hls-quality-selector": "^1.1.4",
     "videojs-hotkeys": "^0.2.25",
     "videojs-offset": "^2.1.2",
     "vue": "^2.6.10",
+    "vue-analytics": "^5.22.1",
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.5"

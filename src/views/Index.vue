@@ -1,43 +1,23 @@
 <template>
   <div>
-    <div class="d-inline-flex p-relative" v-if="streamers.length">
+    <div class="headline text-xs-center pt-2">Наши стримеры</div>
 
-      <v-btn absolute fab flat class="toInfo" @click="$vuetify.goTo('#info')">
-        <v-icon>arrow_downward</v-icon>
-      </v-btn>
-
+    <v-container fluid class="card-list">
       <v-card
-          v-for="([streamer, url], index) in streamers"
-          :key="streamer"
-          :width="window.width / streamers.length"
-          class="fullscreen-height elevation-0 pointer"
+        v-for="([streamer, url], index) in streamers"
+        :key="index"
+        width="250"
+        height="250"
+        class="streamer-card"
+        :to="`/${streamer}`"
       >
-        <router-link :to="`/${streamer}`" tag="div" class="fullscreen-height">
-          <v-img
-              :src="`${url}/img/${streamer}/main.jpg`"
-              class="fullscreen-height"
-              v-on:error="handleImageError(index)"
-              ref="a"
-          >
-
-            <template v-slot:placeholder>
-              <v-layout fill-height align-center justify-center ma-0>
-                <v-progress-circular indeterminate color="grey lighten-5"/>
-              </v-layout>
-            </template>
-
-            <div>
-              <div class="fill-absolute streamer-item"></div>
-              <div class="fill-absolute streamer-background"></div>
-              <div class="fill-absolute streamer-title display-2 pt-5">{{ streamer }}</div>
-            </div>
-
-          </v-img>
-        </router-link>
+        <v-img :src="`${url}/img/${streamer}/main.jpg`" v-on:error="handleImageError(index)" width="250" height="250">
+          <v-container fluid pa-2 class="streamer-title headline">{{ streamer }}</v-container>
+        </v-img>
       </v-card>
-    </div>
-    <v-container fluid id="info">
-      <div class="headline text-xs-center font-weight-bold text-uppercase fill-width">StreamArchive</div>
+    </v-container>
+
+    <v-container>
       <h2 class="display-1 d-block main-page-subtitle">О проекте</h2>
       <span class="body-1 d-block pb-3">
         Всем драсьте. Мы - маленькая команда OpenStreamArchive. Месяцы работы, тонны перекопанного кода (спасибо твичу)
@@ -95,32 +75,17 @@
 
 <script>
 export default {
-  data() {
-    return {
-      window: {
-        width: 0,
-        height: 0
-      },
-      streamers: []
-    };
-  },
+  data: () => ({
+    streamers: []
+  }),
   created() {
-    document.title = "StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА";
-    window.addEventListener("resize", this.handleResize);
-    this.handleResize();
-    this.streamers = Object.entries(this.$endpoints);
-  },
-  destroyed() {
-    window.removeEventListener("resize", this.handleResize);
+    document.title = 'StreamArchive - ЛУЧШИЙ АРХИВ ВО ВСЕЛЕННОЙ КСТА'
+    this.streamers = Object.entries(this.$endpoints)
   },
   methods: {
-    handleResize() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-    },
     handleImageError(index) {
       this.streamers = this.streamers.slice(index, 1)
     }
   }
-};
+}
 </script>
