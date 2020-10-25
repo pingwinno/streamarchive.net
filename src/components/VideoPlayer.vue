@@ -111,7 +111,7 @@ export default {
       axios.get(process.env.VUE_APP_URL + url).then(response => {
         vm.$emit('info', response.data)
         let thumbnails = {}
-        for (let i = 0; i <= response.data.duration; i++) thumbnails[i * 10] = { src: `preview${i}.jpg` }
+        for (let i = 0; i <= response.data.duration; i++) thumbnails[i * 120] = { src: `preview${i}.jpg` }
         this['thumbnails'](thumbnails, timelinePreviewUrl)
       })
     })
